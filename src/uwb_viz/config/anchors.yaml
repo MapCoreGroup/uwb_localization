@@ -1,0 +1,32 @@
+# UWB Anchors Configuration (real robot positions)
+
+fixed_frame: map
+default_height: 0.02
+default_color: [0.0, 0.6, 1.0, 0.35]
+
+anchors:
+  - name: a1
+    frame_id: anchor_a1
+    xyz: [-0.225, 0.195, 0.0]
+    topic: /uwb/A1/range
+    color: [0.9, 0.5, 0.0, 0.35]
+  - name: a2
+    frame_id: anchor_a2
+    xyz: [0.225, 0.195, 0.0]
+    topic: /uwb/A2/range
+    color: [0.9, 0.5, 0.0, 0.35]
+  - name: a3
+    frame_id: anchor_a3
+    xyz: [-0.225, -0.195, 0.0]
+    topic: /uwb/A3/range
+    color: [0.9, 0.5, 0.0, 0.35]
+  - name: a4
+    frame_id: anchor_a4
+    xyz: [0.225, -0.195, 0.0]
+    topic: /uwb/A4/range
+    color: [0.9, 0.5, 0.0, 0.35]
+
+rviz:
+  grid: true
+  axes: true
+  markers: true

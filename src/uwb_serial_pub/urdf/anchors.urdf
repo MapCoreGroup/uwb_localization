@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="uwb_anchors">
+  
+  <!-- Materials with colors matching the circles -->
+  <material name="red">
+    <color rgba="1.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="green">
+    <color rgba="0.0 1.0 0.0 1.0"/>
+  </material>
+  <material name="blue">
+    <color rgba="0.0 0.0 1.0 1.0"/>
+  </material>
+  <material name="yellow">
+    <color rgba="1.0 1.0 0.0 1.0"/>
+  </material>
+
+  <!-- Base frame -->
+  <link name="map"/>
+
+  <!-- Anchor 1 (Red) -->
+  <link name="anchor1">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="map_to_anchor1" type="fixed">
+    <parent link="map"/>
+    <child link="anchor1"/>
+    <origin xyz="-0.225 0.195 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Anchor 2 (Green) -->
+  <link name="anchor2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="map_to_anchor2" type="fixed">
+    <parent link="map"/>
+    <child link="anchor2"/>
+    <origin xyz="0.225 0.195 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Anchor 3 (Blue) -->
+  <link name="anchor3">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="map_to_anchor3" type="fixed">
+    <parent link="map"/>
+    <child link="anchor3"/>
+    <origin xyz="-0.225 -0.195 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Anchor 4 (Yellow) -->
+  <link name="anchor4">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="map_to_anchor4" type="fixed">
+    <parent link="map"/>
+    <child link="anchor4"/>
+    <origin xyz="0.225 -0.195 0.0" rpy="0 0 0"/>
+  </joint>
+
+</robot>

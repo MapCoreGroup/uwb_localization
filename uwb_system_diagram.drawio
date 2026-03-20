@@ -1,0 +1,156 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36" version="29.2.7">
+  <diagram id="UWB-System" name="UWB System Architecture">
+    <mxGraphModel dx="1595" dy="878" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" value="UWB Positioning System Architecture" vertex="1">
+          <mxGeometry height="40" width="500" x="350" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="27kugfzqPLDmfy9S1630-1" edge="1" parent="1" source="nuc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="321.6222426470588" y="170.23529411764707" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nuc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=14;fontStyle=1" value="Intel NUC Computer&#xa;&#xa;Processing Unit" vertex="1">
+          <mxGeometry height="100" width="200" x="470" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="usb-hub" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fontSize=14;fontStyle=1" value="USB Hub" vertex="1">
+          <mxGeometry height="80" width="200" x="470" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="anchor1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;fontStyle=1" value="UWB Anchor 1&#xa;(A1)" vertex="1">
+          <mxGeometry height="70" width="140" x="80" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="anchor2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontSize=12;fontStyle=1" value="UWB Anchor 2&#xa;(A2)" vertex="1">
+          <mxGeometry height="70" width="140" x="270" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="anchor3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=12;fontStyle=1" value="UWB Anchor 3&#xa;(A3)" vertex="1">
+          <mxGeometry height="70" width="140" x="680" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="anchor4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;fontSize=12;fontStyle=1" value="UWB Anchor 4&#xa;(A4)" vertex="1">
+          <mxGeometry height="70" width="140" x="900" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="power-nuc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;fontStyle=1" value="19V Power Source&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="180" x="770" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="tag" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;fontSize=14;fontStyle=1" value="UWB Tag&#xa;&#xa;(User Held)" vertex="1">
+          <mxGeometry height="100" width="150" x="490" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="battery-tag" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;fontStyle=1" value="5V Battery" vertex="1">
+          <mxGeometry height="70" width="150" x="780" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="conn-a1-hub" edge="1" parent="1" source="anchor1" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10" target="usb-hub" value="USB">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-a2-hub" edge="1" parent="1" source="anchor2" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=10" target="usb-hub" value="USB">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-a3-hub" edge="1" parent="1" source="anchor3" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=10" target="usb-hub" value="USB">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-a4-hub" edge="1" parent="1" source="anchor4" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=10" target="usb-hub" value="USB">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-hub-nuc" edge="1" parent="1" source="usb-hub" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#d6b656;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;fontStyle=1" target="nuc" value="USB">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-power-nuc" edge="1" parent="1" source="power-nuc" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#9673a6;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;fontStyle=1" target="nuc" value="19V">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-battery-tag" edge="1" parent="1" source="battery-tag" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#9673a6;exitX=0;exitY=0.5;exitDx=0;exitDy=0;fontSize=12;fontStyle=1;" value="5V">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="640" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-tag-a1" edge="1" parent="1" source="tag" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#82b366;dashed=1;dashPattern=8 8;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=10" target="anchor1" value="UWB">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-tag-a2" edge="1" parent="1" source="tag" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#82b366;dashed=1;dashPattern=8 8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0" target="anchor2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-tag-a3" edge="1" parent="1" source="tag" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#82b366;dashed=1;dashPattern=8 8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0" target="anchor3" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn-tag-a4" edge="1" parent="1" source="tag" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#82b366;dashed=1;dashPattern=8 8;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0" target="anchor4" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=1" value="" vertex="1">
+          <mxGeometry height="120" width="1040" x="80" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" value="Legend" vertex="1">
+          <mxGeometry height="30" width="100" x="100" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-usb" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#d6b656" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="120" y="660" as="sourcePoint" />
+            <mxPoint x="170" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-usb-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12" value="USB Connection" vertex="1">
+          <mxGeometry height="20" width="120" x="180" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-power" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#9673a6" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="120" y="690" as="sourcePoint" />
+            <mxPoint x="170" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-power-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12" value="Power Connection" vertex="1">
+          <mxGeometry height="20" width="120" x="180" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-uwb" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#82b366;dashed=1;dashPattern=8 8" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="660" as="sourcePoint" />
+            <mxPoint x="450" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-uwb-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12" value="UWB Wireless Communication" vertex="1">
+          <mxGeometry height="20" width="180" x="460" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-data" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#666666" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="690" as="sourcePoint" />
+            <mxPoint x="450" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-data-text" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12" value="Data Connection (USB)" vertex="1">
+          <mxGeometry height="20" width="150" x="460" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="27kugfzqPLDmfy9S1630-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6a00ff;strokeColor=#3700CC;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#ffffff;" value="Robot" vertex="1">
+          <mxGeometry height="100" width="200" x="120" y="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

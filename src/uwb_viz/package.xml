@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>uwb_viz</name>
+  <version>0.0.1</version>
+  <description>UWB radius visualization in RViz</description>
+  <maintainer email="ilan@example.com">ilan</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>visualization_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

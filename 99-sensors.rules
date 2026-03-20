@@ -1,0 +1,11 @@
+# U.W.B udev Rules
+
+# /etc/udev/rules.d/99-sensors.rules
+# UWB sensors on CP210x — stable names + safe permissions
+
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="02C5546D", GROUP="dialout", MODE="0660", SYMLINK+="Tag"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="02C554B0", GROUP="dialout", MODE="0660", SYMLINK+="Anchor1"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="02C554A7", GROUP="dialout", MODE="0660", SYMLINK+="Anchor2"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="02C5547A", GROUP="dialout", MODE="0660", SYMLINK+="Anchor3"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="02C55437", GROUP="dialout", MODE="0660", SYMLINK+="Anchor4"
+

@@ -1,0 +1,83 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Cell Size: 1
+      Color: 160; 160; 160
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: true
+      Marker Scale: 0.15
+      Show Axes: true
+      Show Names: true
+      Tree:
+        map:
+          anchor1:
+            {}
+          anchor2:
+            {}
+          anchor3:
+            {}
+          anchor4:
+            {}
+    - Class: rviz_default_plugins/RobotModel
+      Name: RobotModel
+      Enabled: true
+      Description File: ""
+      Description Source: Topic
+      Description Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot_description
+      TF Prefix: ""
+      Update Interval: 0
+      Visual Enabled: true
+      Collision Enabled: false
+    - Class: rviz_default_plugins/Marker
+      Name: UWB Circles
+      Enabled: true
+      Marker Topic: /visualization_marker
+      Queue Size: 100
+      Namespaces:
+        uwb_anchor1: true
+        uwb_anchor2: true
+        uwb_anchor3: true
+        uwb_anchor4: true
+  Name: root
+  Tools: ~
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 2
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Name: Top Down
+      Pitch: 1.57
+      Target Frame: map
+      Value: Orbit (rviz_default_plugins)
+      Yaw: 0
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 900
+  Hide Left Dock: false
+  Hide Right Dock: false
+  Width: 1600
+  X: 50
+  Y: 50
