@@ -1,0 +1,48 @@
+{
+  "name": "uwb_localization (ROS 2 Humble)",
+  "dockerFile": "../Dockerfile",
+  "build": {
+    "args": {
+      "WORKSPACE": "${containerWorkspaceFolder}"
+    }
+  },
+  "workspaceFolder": "/workspaces/uwb_localization",
+  "containerEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}",
+    "ROS_DOMAIN_ID": "86"
+  },
+  "runArgs": [
+    "--network=host",
+    "--privileged",
+    "--cap-add=SYS_PTRACE",
+    "--security-opt=seccomp:unconfined",
+    "--security-opt=apparmor:unconfined",
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+    "--env",
+    "DISPLAY=${env:DISPLAY}",
+    "-e",
+    "QT_X11_NO_MITSHM=1",
+    "-e",
+    "QT_GRAPHICSSYSTEM=native",
+    "--add-host=host.docker.internal:host-gateway",
+    "--volume=/dev:/dev"
+  ],
+  "settings": {
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "bash"
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": [
+    "dotjoshjohnson.xml",
+    "ms-python.python",
+    "ms-azuretools.vscode-ros",
+    "streetsidesoftware.code-spell-checker",
+    "redhat.vscode-yaml",
+    "yzhang.markdown-all-in-one"
+  ],
+  "postCreateCommand": "bash -lc \"source /opt/ros/humble/setup.bash && cd /workspaces/uwb_localization && colcon build --symlink-install\""
+}
+

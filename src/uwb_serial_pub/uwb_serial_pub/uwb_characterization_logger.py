@@ -121,7 +121,9 @@ class UwbCharacterizationLogger(Node):
         measurements = [s['measured_m'] for s in self.samples]
 
         mean_error = sum(errors) / len(errors)
-        variance = sum((e - mean_error) ** 2 for e in errors) / (len(errors) - 1)
+        # Standard deviation of errors around the bias:
+        #   std = sqrt( (1/N) * sum( (e_i - bias)^2 ) )
+        variance = sum((e - mean_error) ** 2 for e in errors) / len(errors)
         std_error = math.sqrt(variance)
         rmse = math.sqrt(sum(e ** 2 for e in errors) / len(errors))
 

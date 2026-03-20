@@ -64,7 +64,7 @@ ros2 launch uwb_serial_pub uwb_characterization.launch.py
 
 ### Launch UWB visualization:
 ```bash
-ros2 launch uwb_viz static_th.launch.py
+ros2 launch uwb_viz static_tf.launch.py
 ```
 
 ## License

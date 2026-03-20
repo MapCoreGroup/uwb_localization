@@ -21,8 +21,8 @@ class Anchor3Node(Node):
             self.get_logger().error(f"Failed to open {port}: {e}")
             raise
 
-        self.pub_raw = self.create_publisher(String, 'uwb/anchor3/raw', 10)
-        self.pub_dist = self.create_publisher(Float32, 'uwb/anchor3/distance_m', 10)
+        self.pub_raw = self.create_publisher(String, '/uwb/anchor3/raw', 10)
+        self.pub_dist = self.create_publisher(Float32, '/uwb/anchor3/distance_m', 10)
         self.timer = self.create_timer(0.05, self.read_serial)
 
     def read_serial(self):
@@ -30,7 +30,9 @@ class Anchor3Node(Node):
             line = self.ser.readline().decode(errors='ignore').strip()
             if line:
                 self.pub_raw.publish(String(data=line))
-                match = re.search(r'distance\s*=\s*([0-9.]+)', line)
+                match = re.search(
+                    r'distance\s*=\s*([-+]?(?:\d+(?:\.\d*)?|\.\d+))', line
+                )
                 if match:
                     dist = float(match.group(1))
                     self.pub_dist.publish(Float32(data=dist))

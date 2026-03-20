@@ -9,7 +9,10 @@ setup(
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', ['launch/static_th.launch.py']),
+        ('share/' + package_name + '/launch', [
+            'launch/static_tf.launch.py',
+            'launch/static_th.launch.py',
+        ]),
         ('share/' + package_name + '/rviz', ['rviz/uwb_viz.rviz']),
         ('share/' + package_name + '/config', ['config/anchors.yaml']),
     ],

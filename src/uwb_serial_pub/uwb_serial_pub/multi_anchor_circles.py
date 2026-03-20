@@ -18,25 +18,31 @@ class MultiAnchorCircles(Node):
             1: {
                 "name": "anchor1",
                 "topic": "/uwb/anchor1/distance_m",
-                "pos": (-0.225, 0.195, 0.0),
+                # Circle is drawn in the anchor frame, so the center is (0,0,0).
+                "pos": (0.0, 0.0, 0.0),
+                "frame_id": "anchor1_frame",
                 "color": (1.0, 0.0, 0.0, 1.0),  # red
             },
             2: {
                 "name": "anchor2",
                 "topic": "/uwb/anchor2/distance_m",
-                "pos": (0.225, 0.195, 0.0),
+                "pos": (0.0, 0.0, 0.0),
+                "frame_id": "anchor2_frame",
                 "color": (0.0, 1.0, 0.0, 1.0),  # green
             },
             3: {
                 "name": "anchor3",
                 "topic": "/uwb/anchor3/distance_m",
-                "pos": (-0.225, -0.195, 0.0),
+                "pos": (0.0, 0.0, 0.0),
+                "frame_id": "anchor3_frame",
+                # Circle is drawn in the anchor frame, so center is (0,0,0).
                 "color": (0.0, 0.0, 1.0, 1.0),  # yellow
             },
             4: {
                 "name": "anchor4",
                 "topic": "/uwb/anchor4/distance_m",
-                "pos": (0.225, -0.195, 0.0),
+                "pos": (0.0, 0.0, 0.0),
+                "frame_id": "anchor4_frame",
                 "color": (1.0, 1.0, 0.0, 1.0),  # blue
             },
         }
@@ -60,7 +66,6 @@ class MultiAnchorCircles(Node):
         self.pub = self.create_publisher(Marker, 'visualization_marker', 10)
         self.timer = self.create_timer(0.1, self._publish_all)
 
-        self.fixed_frame = "map"
         self.line_thickness = 0.01
         self.circle_steps = 100
         self.stale_timeout_sec = 1.0
@@ -81,7 +86,7 @@ class MultiAnchorCircles(Node):
                 center=cfg["pos"],
                 radius=self.state[aid]["radius"],
                 rgba=cfg["color"],
-                frame_id=self.fixed_frame,
+                frame_id=cfg["frame_id"],
                 stamp=now
             )
             self.pub.publish(marker)

@@ -33,48 +33,48 @@ def generate_launch_description():
         # Anchor 1 serial reader
         Node(
             package='uwb_serial_pub',
-            executable='anchor1',
+            executable='uwb_serial_reader_node',
             name='anchor1_reader',
             output='screen',
             parameters=[{
-                'port': '/dev/Anchor1',
-                'baudrate': 115200
+                'anchor_id': 1,
+                'baudrate': 115200,
             }]
         ),
         
         # Anchor 2 serial reader
         Node(
             package='uwb_serial_pub',
-            executable='anchor2',
+            executable='uwb_serial_reader_node',
             name='anchor2_reader',
             output='screen',
             parameters=[{
-                'port': '/dev/Anchor2',
-                'baudrate': 115200
+                'anchor_id': 2,
+                'baudrate': 115200,
             }]
         ),
         
         # Anchor 3 serial reader
         Node(
             package='uwb_serial_pub',
-            executable='anchor3',
+            executable='uwb_serial_reader_node',
             name='anchor3_reader',
             output='screen',
             parameters=[{
-                'port': '/dev/Anchor3',
-                'baudrate': 115200
+                'anchor_id': 3,
+                'baudrate': 115200,
             }]
         ),
         
         # Anchor 4 serial reader
         Node(
             package='uwb_serial_pub',
-            executable='anchor4',
+            executable='uwb_serial_reader_node',
             name='anchor4_reader',
             output='screen',
             parameters=[{
-                'port': '/dev/Anchor4',
-                'baudrate': 115200
+                'anchor_id': 4,
+                'baudrate': 115200,
             }]
         ),
         

@@ -24,8 +24,8 @@ class Anchor1Node(Node):
             raise
 
         # Publishers
-        self.pub_raw = self.create_publisher(String, 'uwb/anchor1/raw', 10)
-        self.pub_dist = self.create_publisher(Float32, 'uwb/anchor1/distance_m', 10)
+        self.pub_raw = self.create_publisher(String, '/uwb/anchor1/raw', 10)
+        self.pub_dist = self.create_publisher(Float32, '/uwb/anchor1/distance_m', 10)
 
         # Timer
         self.timer = self.create_timer(0.05, self.read_serial)  # 20 Hz
@@ -37,8 +37,11 @@ class Anchor1Node(Node):
                 # Publish raw text
                 self.pub_raw.publish(String(data=line))
 
-                # Try to extract numeric distance from the line
-                match = re.search(r'distance\s*=\s*([0-9.]+)', line)
+                # Try to extract numeric distance from the line.
+                # Expected format: "distance = <number>"
+                match = re.search(
+                    r'distance\s*=\s*([-+]?(?:\d+(?:\.\d*)?|\.\d+))', line
+                )
                 if match:
                     dist = float(match.group(1))
                     self.pub_dist.publish(Float32(data=dist))

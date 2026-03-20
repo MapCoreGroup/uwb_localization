@@ -50,7 +50,15 @@ def _launch_setup(context, *args, **kwargs):
 
     # 2) Anchor1 reader
     reader_cmd = [
-        'ros2', 'run', 'uwb_serial_pub', 'anchor1'
+        'ros2',
+        'run',
+        'uwb_serial_pub',
+        'uwb_serial_reader_node',
+        '--ros-args',
+        '-p',
+        'anchor_id:=1',
+        '-p',
+        'baudrate:=115200',
     ]
 
     # 3) Characterization logger

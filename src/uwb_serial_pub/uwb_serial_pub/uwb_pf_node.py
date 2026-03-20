@@ -29,10 +29,7 @@ class UwbParticleFilterNode(Node):
         # You can later turn these into ROS parameters, for now hard-coded
         N = 20000          # number of particles
         dt = 0.5         # initial dt guess, replaced by measured intervals
-        sigma_pos = 0.3  # motion noise in position
-        sigma_v = 0.1    # motion noise in velocity
-        sigma_theta = 0.05  # motion noise in heading
-        gamma = 0.2     # likelihood scale (meters)
+        sigma = 0.03     # range likelihood std [m]
 
         # Anchor positions in the robot base frame [m]
         anchors = [
@@ -46,27 +43,24 @@ class UwbParticleFilterNode(Node):
         self.pf = ParticleFilter(
             N=N,
             dt=dt,
-            sigma_pos=sigma_pos,
-            sigma_v=sigma_v,
-            sigma_theta=sigma_theta,
-            cauchy_gamma=gamma,
+            sigma=sigma,
             anchors=anchors,
         )
 
         # Initialize particles in a broad area around the robot
-        px_range = (-5.0, 5.0)
-        py_range = (-5.0, 5.0)
-        v_range = (0.0, 0.1)
+        x_range = (-5.0, 5.0)
+        y_range = (-5.0, 5.0)
         theta_range = (-math.pi, math.pi)
-        self.pf.initialize(px_range, py_range, v_range, theta_range)
+        v_range = (0.0, 0.1)
+        self.pf.initialize(x_range, y_range, theta_range, v_range)
 
         # ---------------- Range topics ----------------
         # Update these to the actual topic names in your system
         self.range_topics = [
-            'uwb/anchor1/distance_m',
-            'uwb/anchor2/distance_m',
-            'uwb/anchor3/distance_m',
-            'uwb/anchor4/distance_m',
+            '/uwb/anchor1/distance_m',
+            '/uwb/anchor2/distance_m',
+            '/uwb/anchor3/distance_m',
+            '/uwb/anchor4/distance_m',
         ]
 
         # Store the last range measurement from each anchor (initially None)
@@ -134,7 +128,7 @@ class UwbParticleFilterNode(Node):
 
         # Estimate the state from the particle set (weighted mean)
         state = self.pf.estimate()
-        px, py, v, theta = state
+        px, py, theta, v = state
 
         # Publish estimated pose to ROS
         self.publish_pose(px, py, theta)

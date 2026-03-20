@@ -14,6 +14,8 @@ setup(
         ('share/' + package_name + '/launch',
          ['launch/uwb_characterization.launch.py',
           'launch/multi_anchor_circles.launch.py']),
+        ('share/' + package_name + '/config',
+         ['config/serial_reader_defaults.yaml']),
         ('share/' + package_name + '/rviz',
          ['rviz/multi_anchor_circles.rviz']),
         ('share/' + package_name + '/urdf',
@@ -34,12 +36,12 @@ setup(
             'anchor2 = uwb_serial_pub.serial_reader_anchor2:main',
             'anchor3 = uwb_serial_pub.serial_reader_anchor3:main',
             'anchor4 = uwb_serial_pub.serial_reader_anchor4:main',
-            'float_to_marker = uwb_serial_pub.FloatToMarker:main',
             'anchor1_viz = uwb_serial_pub.anchor1_viz:main',
             'multi_anchor_circles = uwb_serial_pub.multi_anchor_circles:main',
             'range_stats_node = uwb_serial_pub.range_stats_node:main',
             'uwb_bayes_direction = uwb_serial_pub.uwb_bayes_direction_node:main',
             'uwb_pf_node = uwb_serial_pub.uwb_pf_node:main',
+            'uwb_serial_reader_node = uwb_serial_pub.uwb_serial_reader_node:main',
             'uwb_characterization_logger = uwb_serial_pub.uwb_characterization_logger:main'
 
         ],

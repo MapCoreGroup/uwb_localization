@@ -5,26 +5,26 @@ default_height: 0.02
 default_color: [0.0, 0.6, 1.0, 0.35]
 
 anchors:
-  - name: a1
-    frame_id: anchor_a1
+  - name: anchor1
+    frame_id: anchor1_frame
     xyz: [-0.225, 0.195, 0.0]
-    topic: /uwb/A1/range
-    color: [0.9, 0.5, 0.0, 0.35]
-  - name: a2
-    frame_id: anchor_a2
+    topic: /uwb/anchor1/distance_m
+    color: [0.9, 0.2, 0.0, 0.35]
+  - name: anchor2
+    frame_id: anchor2_frame
     xyz: [0.225, 0.195, 0.0]
-    topic: /uwb/A2/range
-    color: [0.9, 0.5, 0.0, 0.35]
-  - name: a3
-    frame_id: anchor_a3
+    topic: /uwb/anchor2/distance_m
+    color: [0.2, 0.9, 0.0, 0.35]
+  - name: anchor3
+    frame_id: anchor3_frame
     xyz: [-0.225, -0.195, 0.0]
-    topic: /uwb/A3/range
-    color: [0.9, 0.5, 0.0, 0.35]
-  - name: a4
-    frame_id: anchor_a4
+    topic: /uwb/anchor3/distance_m
+    color: [0.0, 0.2, 0.9, 0.35]
+  - name: anchor4
+    frame_id: anchor4_frame
     xyz: [0.225, -0.195, 0.0]
-    topic: /uwb/A4/range
-    color: [0.9, 0.5, 0.0, 0.35]
+    topic: /uwb/anchor4/distance_m
+    color: [0.9, 0.9, 0.2, 0.35]
 
 rviz:
   grid: true

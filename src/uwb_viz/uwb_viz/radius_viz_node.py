@@ -55,27 +55,30 @@ class RangeMarkerNode(Node):
     def republish_markers(self):
         for i, a in enumerate(self.anchors):
             r = a.get('_last_range', None)
-            if r:
+            if r is not None:
                 self.publish_marker(i, r, transient=True)
 
     def publish_marker(self, anchor_idx, radius, transient=False):
         a = self.anchors[anchor_idx]
         name = a.get('name', f'anchor_{anchor_idx+1}')
+        frame_id = a.get('frame_id', self.fixed_frame)
         xyz = a.get('xyz', [0.0, 0.0, 0.0])
+        base_z = float(xyz[2]) if len(xyz) >= 3 else 0.0
         color = a.get('color', self.default_color)
         r_c, g_c, b_c, alpha = color
 
         # Disk marker (cylinder)
         m = Marker()
-        m.header.frame_id = self.fixed_frame
+        m.header.frame_id = frame_id
         m.header.stamp = self.get_clock().now().to_msg()
         m.ns = f"{name}_radius"
         m.id = anchor_idx * 2 + 1
         m.type = Marker.CYLINDER
         m.action = Marker.ADD
-        m.pose.position.x = xyz[0]
-        m.pose.position.y = xyz[1]
-        m.pose.position.z = xyz[2]
+        # Since the marker is published in the anchor frame, position at (0,0,base_z).
+        m.pose.position.x = 0.0
+        m.pose.position.y = 0.0
+        m.pose.position.z = base_z
         m.pose.orientation.w = 1.0
         m.scale.x = 2.0 * radius
         m.scale.y = 2.0 * radius
@@ -86,15 +89,15 @@ class RangeMarkerNode(Node):
 
         # Text label above the anchor
         t = Marker()
-        t.header.frame_id = self.fixed_frame
+        t.header.frame_id = frame_id
         t.header.stamp = m.header.stamp
         t.ns = f"{name}_label"
         t.id = anchor_idx * 2 + 2
         t.type = Marker.TEXT_VIEW_FACING
         t.action = Marker.ADD
-        t.pose.position.x = xyz[0]
-        t.pose.position.y = xyz[1]
-        t.pose.position.z = xyz[2] + 0.2
+        t.pose.position.x = 0.0
+        t.pose.position.y = 0.0
+        t.pose.position.z = base_z + 0.2
         t.pose.orientation.w = 1.0
         t.scale.z = 0.15
         t.color.r = 1.0

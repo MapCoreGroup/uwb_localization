@@ -1,0 +1,11 @@
+baudrate: 115200
+anchors:
+  - anchor_id: 1
+    port: /dev/Anchor1
+  - anchor_id: 2
+    port: /dev/Anchor2
+  - anchor_id: 3
+    port: /dev/Anchor3
+  - anchor_id: 4
+    port: /dev/Anchor4
+
