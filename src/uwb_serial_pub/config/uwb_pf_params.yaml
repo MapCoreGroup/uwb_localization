@@ -1,0 +1,36 @@
+uwb_pf_node:
+  ros__parameters:
+    verbose: true
+    use_sensor_qos: true
+    min_required_anchors: 3
+    n_particles: 20000
+    init_dt: 0.5
+    pf_dt: 0.1
+    sigma: 0.3
+    neff_threshhold_ratio: 0.5
+    sigma_position: 0.02
+    sigma_theta: 0.05
+    sigma_velocity: 0.1
+    frame_id: map
+    pose_topic: /uwb/pf_pose
+    marker_topic: /uwb/pf_marker
+    anchor_topics:
+      - /uwb/anchor1/distance_m
+      - /uwb/anchor2/distance_m
+      - /uwb/anchor3/distance_m
+      - /uwb/anchor4/distance_m
+    # [a1_x, a1_y, a2_x, a2_y, a3_x, a3_y, a4_x, a4_y]
+    anchor_positions_xy:
+      - -0.225
+      - 0.195
+      - 0.225
+      - 0.195
+      - -0.225
+      - -0.195
+      - 0.225
+      - -0.195
+    init_x_range: [-5.0, 5.0]
+    init_y_range: [-5.0, 5.0]
+    init_theta_range: [-3.1415926535, 3.1415926535]
+    init_v_range: [0.0, 1.5]
+    wait_log_period_sec: 2.0

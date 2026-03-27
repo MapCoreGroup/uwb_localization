@@ -13,9 +13,11 @@ setup(
     
         ('share/' + package_name + '/launch',
          ['launch/uwb_characterization.launch.py',
-          'launch/multi_anchor_circles.launch.py']),
+          'launch/multi_anchor_circles.launch.py',
+          'launch/uwb_pf.launch.py']),
         ('share/' + package_name + '/config',
-         ['config/serial_reader_defaults.yaml']),
+         ['config/serial_reader_defaults.yaml',
+          'config/uwb_pf_params.yaml']),
         ('share/' + package_name + '/rviz',
          ['rviz/multi_anchor_circles.rviz']),
         ('share/' + package_name + '/urdf',

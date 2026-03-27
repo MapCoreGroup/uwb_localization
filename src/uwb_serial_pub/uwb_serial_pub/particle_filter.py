@@ -25,6 +25,9 @@ class ParticleFilter:
             (0.225, -0.195),
         ),
         neff_threshhold_ratio: float = 0.5,
+        sigma_position: float = 0.02,
+        sigma_theta: float = 0.05,
+        sigma_velocity: float = 0.1,
     ):
         self.N = int(N)
         self.dt = float(dt)
@@ -34,6 +37,9 @@ class ParticleFilter:
 
         self.anchors = np.asarray(anchors, dtype=np.float64)
         self.neff_threshhold_ratio = float(neff_threshhold_ratio)
+        self.sigma_position = float(sigma_position)
+        self.sigma_theta = float(sigma_theta)
+        self.sigma_velocity = float(sigma_velocity)
 
         # Particles: [x, y, theta, v]
         self.particles = np.zeros((self.N, 4), dtype=np.float64)
@@ -42,9 +48,7 @@ class ParticleFilter:
     def initialize(self, x_range, y_range, theta_range, v_range):
         self.particles[:, 0] = np.random.uniform(x_range[0], x_range[1], size=self.N)
         self.particles[:, 1] = np.random.uniform(y_range[0], y_range[1], size=self.N)
-        self.particles[:, 2] = np.random.uniform(
-            theta_range[0], theta_range[1], size=self.N
-        )
+        self.particles[:, 2] = np.random.uniform(theta_range[0], theta_range[1], size=self.N)
         self.particles[:, 3] = np.random.uniform(v_range[0], v_range[1], size=self.N)
 
     def predict(self, dt: float | None = None):
@@ -58,25 +62,36 @@ class ParticleFilter:
         theta = self.particles[:, 2]
         v = self.particles[:, 3]
 
-        # Non-linear motion model from the spec:
-        #   x_k = x_{k-1} + v_{k-1} cos(theta_{k-1}) dt
-        #   y_k = y_{k-1} + v_{k-1} sin(theta_{k-1}) dt
-        x_new = x + v * np.cos(theta) * step_dt
-        y_new = y + v * np.sin(theta) * step_dt
+        # Add process noise so particles can turn, speed up, slow down, or stop.
+        theta_noisy = theta + np.random.normal(0.0, self.sigma_theta, size=self.N)
+        theta_noisy = (theta_noisy + np.pi) % (2.0 * np.pi) - np.pi
 
-        # Spec does not define dynamics for theta/v, so we keep them constant.
-        theta_new = theta
+        v_noisy = v + np.random.normal(0.0, self.sigma_velocity, size=self.N)
+        v_noisy = np.clip(v_noisy, 0.0, None)
 
-        theta_new = (theta_new + np.pi) % (2.0 * np.pi) - np.pi
+        # Non-linear motion model with small position diffusion.
+        x_new = (
+            x
+            + v_noisy * np.cos(theta_noisy) * step_dt
+            + np.random.normal(0.0, self.sigma_position, size=self.N)
+        )
+        y_new = (
+            y
+            + v_noisy * np.sin(theta_noisy) * step_dt
+            + np.random.normal(0.0, self.sigma_position, size=self.N)
+        )
+
+        theta_new = theta_noisy
 
         self.particles[:, 0] = x_new
         self.particles[:, 1] = y_new
         self.particles[:, 2] = theta_new
-        self.particles[:, 3] = v
+        self.particles[:, 3] = v_noisy
 
-    def update(self, ranges):
+    def update(self, ranges, anchors=None):
         ranges = np.asarray(ranges, dtype=float)
-        if ranges.shape[0] != self.anchors.shape[0]:
+        anchors_arr = self.anchors if anchors is None else np.asarray(anchors, dtype=np.float64)
+        if ranges.shape[0] != anchors_arr.shape[0]:
             raise ValueError("Number of range measurements must match number of anchors")
 
         x = self.particles[:, 0]
@@ -90,7 +105,7 @@ class ParticleFilter:
         log_w = np.log(self.weights + eps)
         log_total_likelihood = np.zeros(self.N, dtype=np.float64)
 
-        for i, (ax, ay) in enumerate(self.anchors):
+        for i, (ax, ay) in enumerate(anchors_arr):
             expected = np.sqrt((x - ax) ** 2 + (y - ay) ** 2)
             error = ranges[i] - expected
             log_total_likelihood += -0.5 * (error / self.sigma) ** 2
@@ -108,9 +123,9 @@ class ParticleFilter:
     def neff(self):
         return 1.0 / np.sum(self.weights**2)
 
-    def step(self, ranges, dt: float | None = None):
+    def step(self, ranges, dt: float | None = None, anchors=None):
         self.predict(dt)
-        self.update(ranges)
+        self.update(ranges, anchors=anchors)
         # Systematic resampling when N_eff < N/2 (by default).
         if self.neff() < self.neff_threshhold_ratio * self.N:
             self.resample()
