@@ -20,21 +20,21 @@ class MultiAnchorCircles(Node):
                 "topic": "/uwb/anchor1/distance_m",
                 # Circle is drawn in the anchor frame, so the center is (0,0,0).
                 "pos": (0.0, 0.0, 0.0),
-                "frame_id": "anchor1_frame",
+                "frame_id": "anchor1",
                 "color": (1.0, 0.0, 0.0, 1.0),  # red
             },
             2: {
                 "name": "anchor2",
                 "topic": "/uwb/anchor2/distance_m",
                 "pos": (0.0, 0.0, 0.0),
-                "frame_id": "anchor2_frame",
+                "frame_id": "anchor2",
                 "color": (0.0, 1.0, 0.0, 1.0),  # green
             },
             3: {
                 "name": "anchor3",
                 "topic": "/uwb/anchor3/distance_m",
                 "pos": (0.0, 0.0, 0.0),
-                "frame_id": "anchor3_frame",
+                "frame_id": "anchor3",
                 # Circle is drawn in the anchor frame, so center is (0,0,0).
                 "color": (0.0, 0.0, 1.0, 1.0),  # yellow
             },
@@ -42,7 +42,7 @@ class MultiAnchorCircles(Node):
                 "name": "anchor4",
                 "topic": "/uwb/anchor4/distance_m",
                 "pos": (0.0, 0.0, 0.0),
-                "frame_id": "anchor4_frame",
+                "frame_id": "anchor4",
                 "color": (1.0, 1.0, 0.0, 1.0),  # blue
             },
         }

@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 import os
 
 
 def generate_launch_description():
+    use_rviz = LaunchConfiguration('use_rviz')
+
     # Get package share directory
     pkg_share = get_package_share_directory('uwb_serial_pub')
     rviz_cfg = os.path.join(pkg_share, 'rviz', 'multi_anchor_circles.rviz')
@@ -22,6 +27,11 @@ def generate_launch_description():
         rviz_env['LD_LIBRARY_PATH'] = os.environ['LD_LIBRARY_PATH']
     
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'use_rviz',
+            default_value='false',
+            description='Start RViz2 (requires GUI display).'
+        ),
         # Robot State Publisher for URDF
         Node(
             package='robot_state_publisher',
@@ -94,6 +104,7 @@ def generate_launch_description():
             arguments=['-d', rviz_cfg],
             output='screen',
             env=rviz_env,  # Preserves LD_LIBRARY_PATH for OGRE libraries
-            respawn=True  # Restart if crashes
+            respawn=False,
+            condition=IfCondition(use_rviz)
         ),
     ])

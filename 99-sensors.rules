@@ -9,3 +9,17 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{seria
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="02C5547A", GROUP="dialout", MODE="0660", SYMLINK+="Anchor3"
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="02C55437", GROUP="dialout", MODE="0660", SYMLINK+="Anchor4"
 
+# /etc/udev/rules.d/ save here on the host computer 
+# sudo cp ~/docker_ws/uwb_localization/99-sensors.rules /etc/udev/rules.d/
+# or do restart or run tow bash command
+# 1- sudo udevadm control --reload-rules
+# 2- sudo udevadm trigger
+# then check that all good with this command : ls -l /dev | grep -i ttyUSB
+
+# the output should look like that :
+# lrwxrwxrwx   1 root root             7 Mar 27 10:29 Anchor1 -> ttyUSB3
+# lrwxrwxrwx   1 root root             7 Mar 27 10:29 Anchor2 -> ttyUSB1
+# lrwxrwxrwx   1 root root             7 Mar 27 10:29 Anchor3 -> ttyUSB2
+# lrwxrwxrwx   1 root root             7 Mar 27 10:29 Anchor4 -> ttyUSB0
+
+
