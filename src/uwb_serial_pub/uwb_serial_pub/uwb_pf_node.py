@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-
+# ros2 run uwb_serial_pub uwb_pf_node --ros-args --params-file src/uwb_serial_pub/config/uwb_pf_params.yaml
 import math
 import numpy as np
 
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import ExternalShutdownException
 from rclpy.qos import qos_profile_sensor_data
 from std_msgs.msg import Float32
 from geometry_msgs.msg import PoseStamped
@@ -287,7 +288,7 @@ def main(args=None):
     node = UwbParticleFilterNode()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
         node.destroy_node()
