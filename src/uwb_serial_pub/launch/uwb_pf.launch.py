@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+# source /opt/ros/humble/setup.bash
+# source install/setup.bash
+# ros2 launch uwb_serial_pub uwb_pf.launch.py
+
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
