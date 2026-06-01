@@ -4,20 +4,18 @@ services:
       context: ..
       dockerfile: Dockerfile
       target: release
-    image: "mapcore.jfrog.io/robotics/uwb_localization/v0.0.3"
+    image: "mapcore.jfrog.io/robotics/uwb_localization/v0.0.4"
     user: ros
     working_dir: /workspaces/uwb_localization
     command: >
       bash -lc '
-        source /opt/ros/humble/setup.bash &&
-        colcon build --symlink-install --packages-select uwb_viz uwb_serial_pub &&
-        source install/setup.bash &&
-        ros2 launch uwb_viz static_tf.launch.py
-          config:=/workspaces/uwb_localization/config/anchors.yaml
-          rviz_config:=/workspaces/uwb_localization/src/uwb_serial_pub/rviz/multi_anchor_circles.rviz &
-        ros2 launch uwb_serial_pub uwb_pf.launch.py
-          params_file:=/workspaces/uwb_localization/config/uwb_pf_params.yaml
-          use_robot_state_publisher:=true &
+        set -e;
+        source /opt/ros/humble/setup.bash;
+        colcon build --symlink-install --packages-select uwb_viz uwb_serial_pub;
+        source install/setup.bash;
+        RVIZ_CFG="$(ros2 pkg prefix uwb_serial_pub)/share/uwb_serial_pub/rviz/multi_anchor_circles.rviz";
+        ros2 launch uwb_viz static_tf.launch.py config:=/workspaces/uwb_localization/config/anchors.yaml rviz_config:=$RVIZ_CFG &
+        ros2 launch uwb_serial_pub uwb_pf.launch.py params_file:=/workspaces/uwb_localization/config/uwb_pf_params.yaml use_robot_state_publisher:=true &
         wait -n
       '
     restart: unless-stopped
