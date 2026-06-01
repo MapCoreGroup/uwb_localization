@@ -1,6 +1,9 @@
+import os
+
 from setuptools import find_packages, setup
 
 package_name = 'uwb_serial_pub'
+_repo_config = os.path.join('..', '..', 'config')
 
 setup(
     name=package_name,
@@ -16,8 +19,8 @@ setup(
           'launch/multi_anchor_circles.launch.py',
           'launch/uwb_pf.launch.py']),
         ('share/' + package_name + '/config',
-         ['config/serial_reader_defaults.yaml',
-          'config/uwb_pf_params.yaml']),
+         [os.path.join(_repo_config, 'serial_reader_defaults.yaml'),
+          os.path.join(_repo_config, 'uwb_pf_params.yaml')]),
         ('share/' + package_name + '/rviz',
          ['rviz/multi_anchor_circles.rviz']),
         ('share/' + package_name + '/urdf',

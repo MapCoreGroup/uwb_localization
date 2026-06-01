@@ -14,6 +14,12 @@ uwb_pf_node:
     frame_id: map
     pose_topic: /uwb/pf_pose
     marker_topic: /uwb/pf_marker
+    publish_particles: true
+    particles_topic: /uwb/pf_particles
+    max_visualized_particles: 1000
+    particle_min_scale: 0.015
+    particle_max_scale: 0.12
+    particle_publish_every_n: 10
     anchor_topics:
       - /uwb/anchor1/distance_m
       - /uwb/anchor2/distance_m

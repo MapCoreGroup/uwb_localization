@@ -1,0 +1,25 @@
+name: Docker Build & Push
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    uses: MapCoreGroup/.github/.github/workflows/build_and_push.yml@main
+    with:
+      dockerfile: ./Dockerfile
+      target: release
+      platforms: linux/amd64,linux/arm64
+      registry_repo_prefix: robotics
+      add_latest_tag: true
+      free_space_level: moderate
+      cache_enabled: false
+      submodules: true
+
+    secrets:
+      REGISTRY_URL: ${{ secrets.CONTAINER_REGISTRY }}
+      REGISTRY_USERNAME: ${{ secrets.JFROG_USER }}
+      REGISTRY_PASSWORD: ${{ secrets.JFROG_TOKEN }}

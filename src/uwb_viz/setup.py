@@ -1,6 +1,9 @@
+import os
+
 from setuptools import setup
 
 package_name = 'uwb_viz'
+_repo_config = os.path.join('..', '..', 'config')
 
 setup(
     name=package_name,
@@ -14,7 +17,8 @@ setup(
             'launch/static_th.launch.py',
         ]),
         ('share/' + package_name + '/rviz', ['rviz/uwb_viz.rviz']),
-        ('share/' + package_name + '/config', ['config/anchors.yaml']),
+        ('share/' + package_name + '/config',
+         [os.path.join(_repo_config, 'anchors.yaml')]),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

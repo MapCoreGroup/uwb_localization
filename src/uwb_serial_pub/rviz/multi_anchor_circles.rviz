@@ -55,6 +55,16 @@ Visualization Manager:
         uwb_anchor2: true
         uwb_anchor3: true
         uwb_anchor4: true
+    - Class: rviz_default_plugins/Marker
+      Name: UWB PF Estimate
+      Enabled: true
+      Marker Topic: /uwb/pf_marker
+      Queue Size: 10
+    - Class: rviz_default_plugins/MarkerArray
+      Name: UWB PF Particles
+      Enabled: true
+      Marker Topic: /uwb/pf_particles
+      Queue Size: 10
   Name: root
   Tools: ~
   Value: true

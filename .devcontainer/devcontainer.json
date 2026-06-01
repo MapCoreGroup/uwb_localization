@@ -1,14 +1,14 @@
 {
   "name": "uwb_localization (ROS 2 Humble)",
   "dockerFile": "../Dockerfile",
-  "build": {
-    "args": {
-      "WORKSPACE": "${containerWorkspaceFolder}"
-    }
-  },
   "workspaceFolder": "/workspaces/uwb_localization",
+  "remoteUser": "ros",
+  "overrideCommand": true,
+  "init": true,
   "containerEnv": {
     "DISPLAY": "${localEnv:DISPLAY}",
+    "QT_X11_NO_MITSHM": "1",
+    "QT_GRAPHICSSYSTEM": "native",
     "ROS_DOMAIN_ID": "86"
   },
   "runArgs": [
@@ -17,32 +17,34 @@
     "--cap-add=SYS_PTRACE",
     "--security-opt=seccomp:unconfined",
     "--security-opt=apparmor:unconfined",
-    "--volume=/tmp/.X11-unix:/tmp/.X11-unix",
-    "--env",
-    "DISPLAY=${env:DISPLAY}",
-    "-e",
-    "QT_X11_NO_MITSHM=1",
-    "-e",
-    "QT_GRAPHICSSYSTEM=native",
-    "--add-host=host.docker.internal:host-gateway",
-    "--volume=/dev:/dev"
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw",
+    "--add-host=host.docker.internal:host-gateway"
   ],
-  "settings": {
-    "terminal.integrated.profiles.linux": {
-      "bash": {
-        "path": "bash"
-      }
-    },
-    "terminal.integrated.defaultProfile.linux": "bash"
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash"
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "dotjoshjohnson.xml",
+        "ms-python.python",
+        "ms-azuretools.vscode-ros",
+        "streetsidesoftware.code-spell-checker",
+        "redhat.vscode-yaml",
+        "yzhang.markdown-all-in-one"
+      ]
+    }
   },
-  "extensions": [
-    "dotjoshjohnson.xml",
-    "ms-python.python",
-    "ms-azuretools.vscode-ros",
-    "streetsidesoftware.code-spell-checker",
-    "redhat.vscode-yaml",
-    "yzhang.markdown-all-in-one"
-  ],
-  "postCreateCommand": "bash -lc \"source /opt/ros/humble/setup.bash && cd /workspaces/uwb_localization && colcon build --symlink-install\""
+  "postCreateCommand": {
+    "build workspace": "bash -lc 'sudo chown -R ros:ros build install log 2>/dev/null || true; ./build_dev.sh'"
+  },
+  "postAttachCommand": {
+    "source hints": "bash -lc 'grep -qxF \"source /opt/ros/humble/setup.bash\" ~/.bashrc || echo \"source /opt/ros/humble/setup.bash\" >> ~/.bashrc; grep -qxF \"[ -f /workspaces/uwb_localization/install/setup.bash ] && source /workspaces/uwb_localization/install/setup.bash\" ~/.bashrc || echo \"[ -f /workspaces/uwb_localization/install/setup.bash ] && source /workspaces/uwb_localization/install/setup.bash\" >> ~/.bashrc'"
+  }
 }
 

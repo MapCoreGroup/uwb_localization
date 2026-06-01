@@ -52,7 +52,8 @@ def make_nodes(context, *args, **kwargs):
     return actions
 
 def generate_launch_description():
-    default_cfg = os.path.join(os.path.dirname(__file__), '..', 'config', 'anchors.yaml')
+    pkg_share = get_package_share_directory('uwb_viz')
+    default_cfg = os.path.join(pkg_share, 'config', 'anchors.yaml')
     return LaunchDescription([
         SetEnvironmentVariable('RCUTILS_CONSOLE_OUTPUT_FORMAT', '[{severity}] {message}'),
         DeclareLaunchArgument('config', default_value=default_cfg),

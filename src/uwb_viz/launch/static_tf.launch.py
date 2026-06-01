@@ -11,6 +11,7 @@ import yaml
 
 def make_nodes(context, *args, **kwargs):
     cfg_path = LaunchConfiguration("config").perform(context)
+    rviz_cfg = LaunchConfiguration("rviz_config").perform(context)
 
     # Load YAML with anchor definitions (frame IDs + xyz).
     with open(cfg_path, "r") as f:
@@ -61,8 +62,6 @@ def make_nodes(context, *args, **kwargs):
     )
 
     # 3) RViz2 viewer (visual inspection during experiments).
-    pkg_share = get_package_share_directory("uwb_viz")
-    rviz_cfg = os.path.join(pkg_share, "rviz", "uwb_viz.rviz")
     actions.append(
         Node(
             package="rviz2",
@@ -78,9 +77,9 @@ def make_nodes(context, *args, **kwargs):
 
 
 def generate_launch_description():
-    default_cfg = os.path.join(
-        os.path.dirname(__file__), "..", "config", "anchors.yaml"
-    )
+    pkg_share = get_package_share_directory("uwb_viz")
+    default_cfg = os.path.join(pkg_share, "config", "anchors.yaml")
+    default_rviz_cfg = os.path.join(pkg_share, "rviz", "uwb_viz.rviz")
     return LaunchDescription(
         [
             SetEnvironmentVariable(
@@ -88,6 +87,7 @@ def generate_launch_description():
                 "[{severity}] {message}",
             ),
             DeclareLaunchArgument("config", default_value=default_cfg),
+            DeclareLaunchArgument("rviz_config", default_value=default_rviz_cfg),
             OpaqueFunction(function=make_nodes),
         ]
     )

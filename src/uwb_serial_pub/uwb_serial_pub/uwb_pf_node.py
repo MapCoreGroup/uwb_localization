@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ros2 run uwb_serial_pub uwb_pf_node --ros-args --params-file src/uwb_serial_pub/config/uwb_pf_params.yaml
+# ros2 run uwb_serial_pub uwb_pf_node --ros-args --params-file config/uwb_pf_params.yaml
 import math
 import numpy as np
 
@@ -9,7 +9,7 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.qos import qos_profile_sensor_data
 from std_msgs.msg import Float32
 from geometry_msgs.msg import PoseStamped
-from visualization_msgs.msg import Marker
+from visualization_msgs.msg import Marker, MarkerArray
 
 # Import the particle filter class from another file in the same package
 from .particle_filter import ParticleFilter
@@ -42,6 +42,12 @@ class UwbParticleFilterNode(Node):
         self.declare_parameter('frame_id', 'map')
         self.declare_parameter('pose_topic', '/uwb/pf_pose')
         self.declare_parameter('marker_topic', '/uwb/pf_marker')
+        self.declare_parameter('publish_particles', True)
+        self.declare_parameter('particles_topic', '/uwb/pf_particles')
+        self.declare_parameter('max_visualized_particles', 1000)
+        self.declare_parameter('particle_min_scale', 0.015)
+        self.declare_parameter('particle_max_scale', 0.12)
+        self.declare_parameter('particle_publish_every_n', 1)
         self.declare_parameter('anchor_topics', [
             '/uwb/anchor1/distance_m',
             '/uwb/anchor2/distance_m',
@@ -74,6 +80,26 @@ class UwbParticleFilterNode(Node):
         self.frame_id = str(self.get_parameter('frame_id').value)
         pose_topic = str(self.get_parameter('pose_topic').value)
         marker_topic = str(self.get_parameter('marker_topic').value)
+        self.publish_particles_enabled = bool(
+            self.get_parameter('publish_particles').value
+        )
+        particles_topic = str(self.get_parameter('particles_topic').value)
+        self.max_visualized_particles = max(
+            1,
+            int(self.get_parameter('max_visualized_particles').value),
+        )
+        self.particle_min_scale = float(
+            self.get_parameter('particle_min_scale').value
+        )
+        self.particle_max_scale = float(
+            self.get_parameter('particle_max_scale').value
+        )
+        if self.particle_max_scale < self.particle_min_scale:
+            self.particle_max_scale = self.particle_min_scale
+        self.particle_publish_every_n = max(
+            1,
+            int(self.get_parameter('particle_publish_every_n').value),
+        )
 
         anchor_topics = list(self.get_parameter('anchor_topics').value)
         if len(anchor_topics) != 4:
@@ -145,8 +171,16 @@ class UwbParticleFilterNode(Node):
 
         # Marker – sphere in RViz at the estimated position
         self.marker_pub = self.create_publisher(Marker, marker_topic, 10)
+        self.particles_pub = None
+        if self.publish_particles_enabled:
+            self.particles_pub = self.create_publisher(
+                MarkerArray,
+                particles_topic,
+                10,
+            )
         self.last_pf_time = None
         self.last_wait_log_time = 0.0
+        self.particle_publish_count = 0
 
         self.get_logger().info(
             'UWB Particle Filter node started. '
@@ -190,8 +224,13 @@ class UwbParticleFilterNode(Node):
         ranges = np.array([self.latest_ranges[i] for i in available_idx], dtype=float)
         active_anchors = [self.anchor_positions[i] for i in available_idx]
 
-        # Run the particle filter step (prediction + update + resampling)
-        self.pf.step(ranges, dt=self.pf_dt, anchors=active_anchors)
+        # Run prediction + update separately so particle weights can be visualized
+        # before resampling resets them to a uniform distribution.
+        self.pf.predict(self.pf_dt)
+        self.pf.update(ranges, anchors=active_anchors)
+        self.publish_particles()
+        if self.pf.neff() < self.pf.neff_threshhold_ratio * self.pf.N:
+            self.pf.resample()
 
         # Optionally: do NOT clear the buffers.
         # Keeping the latest measurements makes the filter run more smoothly.
@@ -278,6 +317,71 @@ class UwbParticleFilterNode(Node):
         marker.lifetime.sec = 0
 
         self.marker_pub.publish(marker)
+
+    def publish_particles(self):
+        if self.particles_pub is None:
+            return
+
+        self.particle_publish_count += 1
+        if self.particle_publish_count % self.particle_publish_every_n != 0:
+            return
+
+        particles = self.pf.particles
+        weights = self.pf.weights
+        n_particles = particles.shape[0]
+        n_markers = min(n_particles, self.max_visualized_particles)
+
+        if n_markers < n_particles:
+            # Keep RViz responsive by showing the most likely particles.
+            indices = np.argpartition(weights, -n_markers)[-n_markers:]
+        else:
+            indices = np.arange(n_particles)
+
+        selected_weights = weights[indices]
+        max_weight = float(np.max(selected_weights)) if selected_weights.size else 0.0
+        if max_weight <= 0.0 or not np.isfinite(max_weight):
+            normalized_weights = np.ones_like(selected_weights)
+        else:
+            normalized_weights = selected_weights / max_weight
+
+        now = self.get_clock().now().to_msg()
+        markers = MarkerArray()
+
+        delete_all = Marker()
+        delete_all.action = Marker.DELETEALL
+        markers.markers.append(delete_all)
+
+        scale_span = self.particle_max_scale - self.particle_min_scale
+        for marker_id, (particle_idx, weight_norm) in enumerate(
+            zip(indices, normalized_weights)
+        ):
+            marker = Marker()
+            marker.header.frame_id = self.frame_id
+            marker.header.stamp = now
+            marker.ns = 'uwb_pf_particles'
+            marker.id = int(marker_id)
+            marker.type = Marker.SPHERE
+            marker.action = Marker.ADD
+
+            marker.pose.position.x = float(particles[particle_idx, 0])
+            marker.pose.position.y = float(particles[particle_idx, 1])
+            marker.pose.position.z = 0.02
+            marker.pose.orientation.w = 1.0
+
+            scale = self.particle_min_scale + scale_span * float(weight_norm)
+            marker.scale.x = scale
+            marker.scale.y = scale
+            marker.scale.z = scale
+
+            marker.color.r = 1.0
+            marker.color.g = 0.35
+            marker.color.b = 0.05
+            marker.color.a = 0.15 + 0.75 * float(weight_norm)
+            marker.lifetime.sec = 1
+
+            markers.markers.append(marker)
+
+        self.particles_pub.publish(markers)
 
 
 # -------------------------------------------------------
