@@ -3,39 +3,33 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    image: uwb_localization:dev
+      target: release
+    image: "mapcore.jfrog.io/robotics/uwb_localization/v0.0.3"
     user: ros
     working_dir: /workspaces/uwb_localization
-    init: true
-    privileged: true
-    network_mode: host
-    ipc: host
     command: >
       bash -lc '
-        set -e;
-        source /opt/ros/humble/setup.bash;
-        sudo chown -R ros:ros build install log 2>/dev/null || true;
-        colcon build --symlink-install;
-        source install/setup.bash;
-
+        source /opt/ros/humble/setup.bash &&
+        colcon build --symlink-install --packages-select uwb_viz uwb_serial_pub &&
+        source install/setup.bash &&
         ros2 launch uwb_viz static_tf.launch.py
           config:=/workspaces/uwb_localization/config/anchors.yaml
           rviz_config:=/workspaces/uwb_localization/src/uwb_serial_pub/rviz/multi_anchor_circles.rviz &
-
         ros2 launch uwb_serial_pub uwb_pf.launch.py
           params_file:=/workspaces/uwb_localization/config/uwb_pf_params.yaml
           use_robot_state_publisher:=true &
-
-        trap "jobs -p | xargs -r kill 2>/dev/null || true" INT TERM EXIT;
-        wait -n;
+        wait -n
       '
     restart: unless-stopped
+    privileged: true
+    network_mode: "host"
+    ipc: host
     volumes:
       - "..:/workspaces/uwb_localization"
-      - "/tmp/.X11-unix:/tmp/.X11-unix:rw"
+      - "/tmp/.X11-unix:/tmp/.X11-unix"
       - "/dev:/dev"
     environment:
-      DISPLAY: ${DISPLAY}
-      QT_X11_NO_MITSHM: "1"
-      QT_GRAPHICSSYSTEM: native
-      ROS_DOMAIN_ID: "86"
+      - "DISPLAY=${DISPLAY}"
+      - "QT_X11_NO_MITSHM=1"
+      - "QT_GRAPHICSSYSTEM=native"
+      - "ROS_DOMAIN_ID=86"
