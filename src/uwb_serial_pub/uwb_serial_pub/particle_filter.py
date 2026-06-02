@@ -145,6 +145,17 @@ class ParticleFilter:
         v_mean = float(np.sum(w * self.particles[:, 3]))
         return np.array([x_mean, y_mean, theta_mean, v_mean], dtype=np.float64)
 
+    def estimate_position_variance(self):
+        # Weighted position variance around the current weighted mean.
+        w = self.weights
+        state_mean = self.estimate()
+        dx = self.particles[:, 0] - state_mean[0]
+        dy = self.particles[:, 1] - state_mean[1]
+
+        var_x = float(np.sum(w * dx * dx))
+        var_y = float(np.sum(w * dy * dy))
+        return var_x, var_y
+
     def resample(self):
         positions = (np.arange(self.N) + np.random.uniform()) / self.N
         cumulative_sum = np.cumsum(self.weights)

@@ -8,7 +8,7 @@ from rclpy.node import Node
 from rclpy.executors import ExternalShutdownException
 from rclpy.qos import qos_profile_sensor_data
 from std_msgs.msg import Float32
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
 from visualization_msgs.msg import Marker, MarkerArray
 
 # Import the particle filter class from another file in the same package
@@ -41,6 +41,7 @@ class UwbParticleFilterNode(Node):
         self.declare_parameter('sigma_velocity', 0.1)
         self.declare_parameter('frame_id', 'map')
         self.declare_parameter('pose_topic', '/uwb/pf_pose')
+        self.declare_parameter('pose_cov_topic', '/uwb/pf_pose_cov')
         self.declare_parameter('marker_topic', '/uwb/pf_marker')
         self.declare_parameter('publish_particles', True)
         self.declare_parameter('particles_topic', '/uwb/pf_particles')
@@ -79,6 +80,7 @@ class UwbParticleFilterNode(Node):
         sigma_velocity = float(self.get_parameter('sigma_velocity').value)
         self.frame_id = str(self.get_parameter('frame_id').value)
         pose_topic = str(self.get_parameter('pose_topic').value)
+        pose_cov_topic = str(self.get_parameter('pose_cov_topic').value)
         marker_topic = str(self.get_parameter('marker_topic').value)
         self.publish_particles_enabled = bool(
             self.get_parameter('publish_particles').value
@@ -168,6 +170,11 @@ class UwbParticleFilterNode(Node):
         # ---------------- Publishers for RViz ----------------
         # PoseStamped – can be used by other nodes
         self.pose_pub = self.create_publisher(PoseStamped, pose_topic, 10)
+        self.pose_cov_pub = self.create_publisher(
+            PoseWithCovarianceStamped,
+            pose_cov_topic,
+            10,
+        )
 
         # Marker – sphere in RViz at the estimated position
         self.marker_pub = self.create_publisher(Marker, marker_topic, 10)
@@ -244,9 +251,11 @@ class UwbParticleFilterNode(Node):
         # Estimate the state from the particle set (weighted mean)
         state = self.pf.estimate()
         px, py, theta, v = state
+        var_x, var_y = self.pf.estimate_position_variance()
 
         # Publish estimated pose to ROS
         self.publish_pose(px, py, theta)
+        self.publish_pose_with_covariance(px, py, theta, var_x, var_y)
 
         # Publish a small sphere marker in RViz
         self.publish_marker(px, py)
@@ -278,6 +287,34 @@ class UwbParticleFilterNode(Node):
         msg.pose.orientation.w = math.cos(theta * 0.5)
 
         self.pose_pub.publish(msg)
+
+    def publish_pose_with_covariance(
+        self,
+        px: float,
+        py: float,
+        theta: float,
+        var_x: float,
+        var_y: float,
+    ):
+        msg = PoseWithCovarianceStamped()
+        msg.header.frame_id = self.frame_id
+        msg.header.stamp = self.get_clock().now().to_msg()
+
+        msg.pose.pose.position.x = float(px)
+        msg.pose.pose.position.y = float(py)
+        msg.pose.pose.position.z = 0.0
+
+        # Convert yaw (theta) to quaternion around z-axis.
+        msg.pose.pose.orientation.x = 0.0
+        msg.pose.pose.orientation.y = 0.0
+        msg.pose.pose.orientation.z = math.sin(theta * 0.5)
+        msg.pose.pose.orientation.w = math.cos(theta * 0.5)
+
+        # 6x6 row-major covariance: x, y, z, roll, pitch, yaw.
+        msg.pose.covariance[0] = float(var_x)
+        msg.pose.covariance[7] = float(var_y)
+
+        self.pose_cov_pub.publish(msg)
 
     # -------------------------------------------------------
     #            Publish a Marker sphere in RViz
